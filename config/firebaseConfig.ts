@@ -5,6 +5,13 @@ import * as path from 'path';
 dotenv.config();
 
 const getDatastoreOptions = () => {
+  console.log('Environment check:', {
+    NODE_ENV: process.env.NODE_ENV,
+    VERCEL: process.env.VERCEL,
+    hasCredentials: !!process.env.GOOGLE_CREDENTIALS_JSON,
+    credentialsLength: process.env.GOOGLE_CREDENTIALS_JSON?.length || 0
+  });
+
   // For Vercel/production environments
   if (process.env.GOOGLE_CREDENTIALS_JSON) {
     try {
@@ -19,6 +26,8 @@ const getDatastoreOptions = () => {
       console.log('Falling back to local service-account.json file');
       // Fallback to local file
     }
+  } else {
+    console.log('GOOGLE_CREDENTIALS_JSON not found in environment variables');
   }
 
   // For local development or fallback
