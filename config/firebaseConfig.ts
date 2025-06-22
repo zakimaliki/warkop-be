@@ -6,5 +6,5 @@ dotenv.config();
 
 export const datastore = new Datastore({
   projectId: process.env.FIREBASE_PROJECT_ID,
-  keyFilename: process.env.GOOGLE_APPLICATION_CREDENTIALS || path.join(__dirname, '../service-account.json'),
+  keyFilename: path.join(__dirname, '../service-account.json'),
 }); 
