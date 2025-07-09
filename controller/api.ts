@@ -13,6 +13,9 @@ export class UserController {
   async createUser(req: AuthRequest, res: Response) {
     try {
       const userData: CreateUserDTO = req.body;
+      if (!['job_seeker', 'job_provider'].includes(userData.role)) {
+        return res.status(400).json({ message: 'Invalid role' });
+      }
       const user = await this.userRepository.create(userData);
       res.status(201).json(user);
     } catch (error) {
@@ -24,11 +27,11 @@ export class UserController {
     try {
       const userId = req.params.id;
       const user = await this.userRepository.findById(userId);
-      
+
       if (!user) {
         return res.status(404).json({ message: 'User not found' });
       }
-      
+
       res.json(user);
     } catch (error) {
       res.status(500).json({ message: 'Error fetching user' });
@@ -40,11 +43,11 @@ export class UserController {
       const userId = req.params.id;
       const userData: UpdateUserDTO = req.body;
       const updatedUser = await this.userRepository.update(userId, userData);
-      
+
       if (!updatedUser) {
         return res.status(404).json({ message: 'User not found' });
       }
-      
+
       res.json(updatedUser);
     } catch (error) {
       res.status(500).json({ message: 'Error updating user' });
@@ -55,11 +58,11 @@ export class UserController {
     try {
       const userId = req.params.id;
       const success = await this.userRepository.delete(userId);
-      
+
       if (!success) {
         return res.status(404).json({ message: 'User not found' });
       }
-      
+
       res.status(204).send();
     } catch (error) {
       res.status(500).json({ message: 'Error deleting user' });

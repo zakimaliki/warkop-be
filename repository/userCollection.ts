@@ -12,6 +12,7 @@ export class UserRepository {
       id: key.id as string,
       email: userData.email,
       name: userData.name,
+      role: userData.role,
       createdAt: new Date(),
       updatedAt: new Date(),
     };
